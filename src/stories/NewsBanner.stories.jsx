@@ -5,15 +5,23 @@ const fontImport = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 `;
 
-const baseContainerStyle = {
+const THEME_LOGOS = {
+  blue: "https://www.hhs.gov/sites/default/files/logo-white-lg.png",
+  white: "https://www.hhs.gov/sites/default/files/logo-blue-lg.png",
+};
+
+const baseContainerStyle = (backgroundTheme) => ({
   minHeight: "100vh",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   padding: "48px",
   boxSizing: "border-box",
-  background: "radial-gradient(circle at 15% 20%, rgba(46, 74, 117, 0.45), transparent 40%), radial-gradient(circle at 80% 80%, rgba(15, 39, 77, 0.45), transparent 36%), linear-gradient(135deg, #0b1d36, #142f57)",
-};
+  background:
+    backgroundTheme === "white"
+      ? "linear-gradient(180deg, #f5f7fb 0%, #ffffff 60%, #e8ecf3 100%)"
+      : "radial-gradient(circle at 15% 20%, rgba(46, 74, 117, 0.45), transparent 40%), radial-gradient(circle at 80% 80%, rgba(15, 39, 77, 0.45), transparent 36%), linear-gradient(135deg, #0b1d36, #142f57)",
+});
 
 const cardStyle = (maxWidth, padding, cornerRadius) => ({
   maxWidth: `${maxWidth}px`,
@@ -30,6 +38,26 @@ const cardStyle = (maxWidth, padding, cornerRadius) => ({
   backgroundClip: "padding-box, border-box",
   boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
 });
+
+const resolveLogo = (backgroundTheme, logoUrl) => {
+  if (logoUrl?.trim()) return logoUrl;
+  return THEME_LOGOS[backgroundTheme] || THEME_LOGOS.blue;
+};
+
+const responsiveLogoStyles = `
+  .logo-banner { display: flex; align-items: stretch; justify-content: center; gap: 24px; width: 100%; box-sizing: border-box; }
+  .logo-banner__logo { height: 100%; max-height: 360px; width: auto; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.28)); flex-shrink: 0; }
+  .logo-banner__card { width: 100%; }
+
+  @media (max-width: 900px) {
+    .logo-banner { gap: 18px; }
+  }
+
+  @media (max-width: 768px) {
+    .logo-banner { flex-direction: column; align-items: center; max-width: 100% !important; }
+    .logo-banner__logo { width: 140px; height: auto; }
+  }
+`;
 
 export default {
   title: "News Banner",
@@ -49,6 +77,8 @@ export default {
     lineHeight: 0.9,
     accentColor: "#8bd8ff",
     subheadingFitRatio: 7.5,
+    backgroundTheme: "blue",
+    logoUrl: "",
   },
   argTypes: {
     kicker: { control: "text" },
@@ -62,6 +92,11 @@ export default {
     maxSize: { control: { type: "range", min: 60, max: 200, step: 2 } },
     lineHeight: { control: { type: "range", min: 0.7, max: 1.3, step: 0.01 } },
     accentColor: { control: "color" },
+    backgroundTheme: {
+      control: { type: "inline-radio" },
+      options: ["blue", "white"],
+    },
+    logoUrl: { control: "text" },
   },
 };
 
@@ -78,10 +113,11 @@ export const FitTextBanner = (args) => {
     lineHeight,
     accentColor,
     subheadingFitRatio,
+    backgroundTheme,
   } = args;
 
   return (
-    <div style={baseContainerStyle}>
+    <div style={baseContainerStyle(backgroundTheme)}>
       <style>{fontImport}</style>
       <section style={cardStyle(maxWidth, padding, cornerRadius)}>
         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -110,6 +146,70 @@ export const FitTextBanner = (args) => {
           {headline}
         </FitText>
       </section>
+    </div>
+  );
+};
+
+export const FitTextBannerWithLogo = (args) => {
+  const {
+    kicker,
+    headline,
+    maxWidth,
+    padding,
+    cornerRadius,
+    fitRatio,
+    minSize,
+    maxSize,
+    lineHeight,
+    accentColor,
+    subheadingFitRatio,
+    backgroundTheme,
+    logoUrl,
+  } = args;
+
+  const computedLogoUrl = resolveLogo(backgroundTheme, logoUrl);
+
+  return (
+    <div style={baseContainerStyle(backgroundTheme)}>
+      <style>{fontImport + responsiveLogoStyles}</style>
+      <div
+        className="logo-banner"
+        style={{
+          maxWidth: `${maxWidth + padding * 2}px`,
+        }}
+      >
+        <img
+          src={computedLogoUrl}
+          alt="Banner logo"
+          className="logo-banner__logo"
+        />
+        <section className="logo-banner__card" style={cardStyle(maxWidth, padding, cornerRadius)}>
+          <FitText
+            as="h1"
+            minSize={minSize}
+            maxSize={maxSize}
+            fitRatio={fitRatio}
+            lineHeight={lineHeight}
+            align="left"
+            shadow="0 6px 25px rgba(0,0,0,0.25)"
+          >
+            {kicker}
+          </FitText>
+          <FitText
+            as="h2"
+            minSize={minSize - 6}
+            maxSize={maxSize - 8}
+            fitRatio={subheadingFitRatio}
+            lineHeight={lineHeight + 0.06}
+            color={accentColor}
+            letterSpacing="0.04em"
+            style={{ marginTop: "10px" }}
+            weight={600}
+          >
+            {headline}
+          </FitText>
+        </section>
+      </div>
     </div>
   );
 };
