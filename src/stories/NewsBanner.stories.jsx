@@ -24,11 +24,14 @@ const baseContainerStyle = (backgroundTheme) => ({
       : "radial-gradient(circle at 15% 20%, rgba(46, 74, 117, 0.45), transparent 40%), radial-gradient(circle at 80% 80%, rgba(15, 39, 77, 0.45), transparent 36%), linear-gradient(135deg, #0b1d36, #142f57)",
 });
 
-const cardStyle = (maxWidth, padding, cornerRadius, layoutStyle) => {
-  const borderGradient =
-    layoutStyle === "splitSections"
-      ? "linear-gradient(#0b1d36, #0b1d36)"
-      : "linear-gradient(135deg, #8bd8ff, #1f4f82)";
+const cardStyle = (maxWidth, padding, cornerRadius, layoutStyle, backgroundTheme) => {
+  const borderGradient = (() => {
+    if (layoutStyle === "splitSections") {
+      if (backgroundTheme === "blue") return "linear-gradient(#ffffff, #ffffff)";
+      return "linear-gradient(#0b1d36, #0b1d36)";
+    }
+    return "linear-gradient(135deg, #8bd8ff, #1f4f82)";
+  })();
 
   return {
     maxWidth: `${maxWidth}px`,
@@ -313,7 +316,15 @@ export const FitTextBanner = (args) => {
   return (
     <div style={baseContainerStyle(backgroundTheme)}>
       <style>{fontImport}</style>
-      <section style={cardStyle(maxWidth, cardPadding, cornerRadius, layoutStyle)}>
+      <section
+        style={cardStyle(
+          maxWidth,
+          cardPadding,
+          cornerRadius,
+          layoutStyle,
+          backgroundTheme
+        )}
+      >
         {renderBannerContent({
           kicker,
           headline,
@@ -381,7 +392,16 @@ export const FitTextBannerWithLogo = (args) => {
             alt="Banner logo"
             className="logo-banner__logo"
           />
-        <section className="logo-banner__card" style={cardStyle(maxWidth, cardPadding, cornerRadius, layoutStyle)}>
+        <section
+          className="logo-banner__card"
+          style={cardStyle(
+            maxWidth,
+            cardPadding,
+            cornerRadius,
+            layoutStyle,
+            backgroundTheme
+          )}
+        >
           {renderBannerContent({
             kicker,
             headline,
