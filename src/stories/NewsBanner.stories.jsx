@@ -1,5 +1,6 @@
 import React from "react";
 import { FitText } from "../components/FitText";
+import { brand } from "../brand";
 
 const fontImport = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
@@ -79,6 +80,7 @@ export default {
     subheadingFitRatio: 7.5,
     backgroundTheme: "blue",
     logoUrl: "",
+
   },
   argTypes: {
     kicker: { control: "text" },
