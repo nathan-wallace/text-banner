@@ -31,19 +31,6 @@ const cardStyle = (maxWidth, padding, cornerRadius) => ({
   boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
 });
 
-const capsuleStyle = (accent) => ({
-  display: "inline-flex",
-  gap: "8px",
-  alignItems: "center",
-  padding: "12px 18px",
-  background: `linear-gradient(135deg, ${accent}, ${accent}dd)`,
-  color: "#0b1d36",
-  borderRadius: "999px",
-  fontFamily: '"Bebas Neue", sans-serif',
-  letterSpacing: "0.08em",
-  fontSize: "18px",
-});
-
 export default {
   title: "News Banner",
   parameters: {
@@ -62,7 +49,6 @@ export default {
     lineHeight: 0.9,
     accentColor: "#8bd8ff",
     subheadingFitRatio: 7.5,
-    showHelper: true,
   },
   argTypes: {
     kicker: { control: "text" },
@@ -76,38 +62,8 @@ export default {
     maxSize: { control: { type: "range", min: 60, max: 200, step: 2 } },
     lineHeight: { control: { type: "range", min: 0.7, max: 1.3, step: 0.01 } },
     accentColor: { control: "color" },
-    showHelper: { control: "boolean" },
   },
 };
-
-const HelperCopy = ({ accentColor }) => (
-  <p
-    style={{
-      margin: "18px 0 0",
-      color: "#d3e5ff",
-      fontFamily: "Inter, system-ui, sans-serif",
-      fontSize: "15px",
-      lineHeight: 1.5,
-      textAlign: "center",
-      background: "rgba(255,255,255,0.05)",
-      borderRadius: "12px",
-      padding: "12px 14px",
-      border: `1px solid ${accentColor}40`,
-    }}
-  >
-    Powered by CSS <code>cqw</code> units from the
-    <a
-      style={{ color: accentColor, marginLeft: 6 }}
-      href="https://github.com/explainers-by-googlers/css-fit-text"
-      target="_blank"
-      rel="noreferrer"
-    >
-      css-fit-text
-    </a>{" "}
-    example. Resize the canvas or adjust the Fit Ratio controls to see the text
-    automatically fill the banner without JavaScript.
-  </p>
-);
 
 export const FitTextBanner = (args) => {
   const {
@@ -122,7 +78,6 @@ export const FitTextBanner = (args) => {
     lineHeight,
     accentColor,
     subheadingFitRatio,
-    showHelper,
   } = args;
 
   return (
@@ -130,7 +85,6 @@ export const FitTextBanner = (args) => {
       <style>{fontImport}</style>
       <section style={cardStyle(maxWidth, padding, cornerRadius)}>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <span style={capsuleStyle(accentColor)}>Live updates</span>
         </div>
         <FitText
           as="h1"
@@ -155,7 +109,6 @@ export const FitTextBanner = (args) => {
         >
           {headline}
         </FitText>
-        {showHelper && <HelperCopy accentColor={accentColor} />}
       </section>
     </div>
   );
