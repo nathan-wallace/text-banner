@@ -24,21 +24,27 @@ const baseContainerStyle = (backgroundTheme) => ({
       : "radial-gradient(circle at 15% 20%, rgba(46, 74, 117, 0.45), transparent 40%), radial-gradient(circle at 80% 80%, rgba(15, 39, 77, 0.45), transparent 36%), linear-gradient(135deg, #0b1d36, #142f57)",
 });
 
-const cardStyle = (maxWidth, padding, cornerRadius) => ({
-  maxWidth: `${maxWidth}px`,
-  width: "100%",
-  containerType: "inline-size",
-  containerName: "banner",
-  borderRadius: `${cornerRadius}px`,
-  padding: `${padding}px`,
-  boxSizing: "border-box",
-  background:
-    "linear-gradient(145deg, rgba(11, 29, 54, 0.95), rgba(20, 47, 87, 0.9)) padding-box, linear-gradient(135deg, #8bd8ff, #1f4f82) border-box",
-  border: "12px solid transparent",
-  backgroundOrigin: "border-box",
-  backgroundClip: "padding-box, border-box",
-  boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
-});
+const cardStyle = (maxWidth, padding, cornerRadius, layoutStyle) => {
+  const borderGradient =
+    layoutStyle === "splitSections"
+      ? "linear-gradient(#0b1d36, #0b1d36)"
+      : "linear-gradient(135deg, #8bd8ff, #1f4f82)";
+
+  return {
+    maxWidth: `${maxWidth}px`,
+    width: "100%",
+    containerType: "inline-size",
+    containerName: "banner",
+    borderRadius: `${cornerRadius}px`,
+    padding: `${padding}px`,
+    boxSizing: "border-box",
+    background: `linear-gradient(145deg, rgba(11, 29, 54, 0.95), rgba(20, 47, 87, 0.9)) padding-box, ${borderGradient} border-box`,
+    border: "12px solid transparent",
+    backgroundOrigin: "border-box",
+    backgroundClip: "padding-box, border-box",
+    boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
+  };
+};
 
 const resolveLogo = (backgroundTheme, logoUrl) => {
   if (logoUrl?.trim()) return logoUrl;
@@ -307,7 +313,7 @@ export const FitTextBanner = (args) => {
   return (
     <div style={baseContainerStyle(backgroundTheme)}>
       <style>{fontImport}</style>
-      <section style={cardStyle(maxWidth, cardPadding, cornerRadius)}>
+      <section style={cardStyle(maxWidth, cardPadding, cornerRadius, layoutStyle)}>
         {renderBannerContent({
           kicker,
           headline,
@@ -375,7 +381,7 @@ export const FitTextBannerWithLogo = (args) => {
             alt="Banner logo"
             className="logo-banner__logo"
           />
-        <section className="logo-banner__card" style={cardStyle(maxWidth, cardPadding, cornerRadius)}>
+        <section className="logo-banner__card" style={cardStyle(maxWidth, cardPadding, cornerRadius, layoutStyle)}>
           {renderBannerContent({
             kicker,
             headline,

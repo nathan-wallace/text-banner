@@ -7,7 +7,7 @@ import { create } from '@storybook/theming/create';
 addons.setConfig({
   theme: create({
     base: "light",
-    brandTitle: "Social Media Toolkit",
+    brandTitle: "Announcement Toolkit",
   }),
   shortcuts: {
     toggleShortcutsHelp: null,
