@@ -44,7 +44,7 @@ Create, preview, and export on-brand campaign assets for every social channel fr
   npm run build-storybook:gh
   ```
 - Commit the generated `docs/` folder and push to your default branch.
-- In your repository settings, enable GitHub Pages to serve from the `docs/` folder on the default branch. The published site will live at `https://<username>.github.io/<repo>/`.
+- The included GitHub Actions workflow (`.github/workflows/deploy-storybook.yml`) will automatically publish the `docs/` directory to GitHub Pages from the `gh-pages` branch whenever you push to `main`. You can also trigger it manually from the Actions tab.
 
 ## Project structure
 ```
