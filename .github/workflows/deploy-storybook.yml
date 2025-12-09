@@ -30,3 +30,17 @@ jobs:
         with:
           branch: gh-pages
           folder: docs
+
+      - name: Share GitHub Pages link
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          owner="${REPOSITORY%%/*}"
+          repo="${REPOSITORY#*/}"
+          url="https://${owner}.github.io/${repo}/"
+          echo "Storybook available at ${url}"
+          {
+            echo "## Storybook deployment"
+            echo ""
+            echo "[View on GitHub Pages](${url})"
+          } >> "$GITHUB_STEP_SUMMARY"
