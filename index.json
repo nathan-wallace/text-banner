@@ -1,1 +1,1 @@
-{"v":5,"entries":{"news-banner--default":{"type":"story","id":"news-banner--default","name":"Default","title":"News Banner","importPath":"./src/stories/NewsBanner.stories.jsx","tags":["dev","test"]}}}
+{"v":5,"entries":{"news-banner--fit-text-banner":{"type":"story","id":"news-banner--fit-text-banner","name":"Fit Text Banner","title":"News Banner","importPath":"./src/stories/NewsBanner.stories.jsx","tags":["dev","test"]}}}
