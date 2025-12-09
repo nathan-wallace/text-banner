@@ -81,6 +81,10 @@ export default {
     backgroundTheme: "blue",
     logoUrl: "",
     logoSizeRatio: 0.32,
+    kickerBackground: "#0b1d36",
+    kickerTextColor: "#ffffff",
+    subtextBackground: "#ffffff",
+    subtextTextColor: "#0b1d36",
 
   },
   argTypes: {
@@ -104,6 +108,10 @@ export default {
       control: { type: "range", min: 0.15, max: 0.5, step: 0.01 },
       description: "Adjust the proportional width of the logo relative to the text card",
     },
+    kickerBackground: { control: "color" },
+    kickerTextColor: { control: "color" },
+    subtextBackground: { control: "color" },
+    subtextTextColor: { control: "color" },
   },
 };
 
@@ -153,6 +161,85 @@ export const FitTextBanner = (args) => {
           {headline}
         </FitText>
       </section>
+    </div>
+  );
+};
+
+export const SplitBackgroundBanner = (args) => {
+  const {
+    kicker,
+    headline,
+    maxWidth,
+    padding,
+    cornerRadius,
+    fitRatio,
+    minSize,
+    maxSize,
+    lineHeight,
+    accentColor,
+    subheadingFitRatio,
+    kickerBackground,
+    kickerTextColor,
+    subtextBackground,
+    subtextTextColor,
+    backgroundTheme,
+  } = args;
+
+  const textPanelStyle = (backgroundColor, borderColor) => ({
+    backgroundColor,
+    padding: `${padding}px`,
+    borderRadius: `${cornerRadius}px`,
+    border: borderColor ? `3px solid ${borderColor}` : undefined,
+    boxShadow: "0 16px 36px rgba(0,0,0,0.18)",
+    boxSizing: "border-box",
+  });
+
+  return (
+    <div style={baseContainerStyle(backgroundTheme)}>
+      <style>{fontImport}</style>
+      <div
+        style={{
+          maxWidth: `${maxWidth}px`,
+          width: "100%",
+          containerType: "inline-size",
+          containerName: "banner",
+          display: "flex",
+          flexDirection: "column",
+          gap: "18px",
+        }}
+      >
+        <div style={textPanelStyle(kickerBackground)}>
+          <FitText
+            as="h1"
+            minSize={minSize}
+            maxSize={maxSize}
+            fitRatio={fitRatio}
+            lineHeight={lineHeight}
+            align="left"
+            color={kickerTextColor}
+            shadow="0 6px 25px rgba(0,0,0,0.2)"
+          >
+            {kicker}
+          </FitText>
+        </div>
+
+        <div style={textPanelStyle(subtextBackground, accentColor)}>
+          <FitText
+            as="h2"
+            minSize={minSize - 6}
+            maxSize={maxSize - 8}
+            fitRatio={subheadingFitRatio}
+            lineHeight={lineHeight + 0.06}
+            align="left"
+            color={subtextTextColor}
+            letterSpacing="0.04em"
+            weight={600}
+            style={{ textTransform: "none" }}
+          >
+            {headline}
+          </FitText>
+        </div>
+      </div>
     </div>
   );
 };
