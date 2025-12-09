@@ -1,0 +1,22 @@
+<!-- .storybook/manager-head.html -->
+<style>
+  /* Hide the search box (if it has a known data attribute or class) */
+  [data-test-id="storybook-search"] {
+    display: none;
+  }
+  /* Hide the settings button */
+  [data-test-id="storybook-settings"] {
+    display: none;
+  }
+  .sb-update-notification,
+  .sb-update-notification-container {
+    display: none !important;
+  }
+  /* Hide the shortcuts help button if it exists */
+  .osf-shortcuts-help {
+    display: none !important;
+  }
+  button[title="Shortcuts"], div:has(> .search-field) {
+    display: none !important;
+}
+</style>

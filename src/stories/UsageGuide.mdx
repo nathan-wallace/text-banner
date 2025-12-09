@@ -1,0 +1,133 @@
+import { Meta } from "@storybook/blocks";
+import React from "react";
+
+import ImageWithPlaceholder from "../components/ImageWithPlaceholder/ImageWithPlaceholder";
+
+export const RightArrow = () => (
+  <svg
+    viewBox="0 0 14 14"
+    width="8px"
+    height="14px"
+    style={{
+      marginLeft: "4px",
+      display: "inline-block",
+      shapeRendering: "inherit",
+      verticalAlign: "middle",
+      fill: "currentColor",
+    }}
+  >
+    <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z" />
+  </svg>
+);
+
+<Meta title="Usage Guide" />
+
+<div className="sb-container">
+  <div className="sb-section-title">
+    # Usage Guide
+
+    The **Social Media Toolkit** helps you design on-brand imagery for every channel your team supports. Each story provides a platform-specific canvas—complete with the recommended dimensions and safe areas—so you can drag in your artwork, fine-tune the framing, and generate ready-to-share files without leaving Storybook.
+  </div>
+
+  <div className="sb-section">
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Choose a Platform Template</h4>
+      <p className="sb-section-item-paragraph">
+        Browse the <strong>Platforms</strong> stories to find the surface you need—YouTube channel art, Instagram stories, TikTok ads, email hero images, and more. Each canvas is already sized to the latest specs so you can focus on creative decisions instead of memorizing dimensions.
+      </p>
+    </div>
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Upload and Reuse Images</h4>
+      <p className="sb-section-item-paragraph">
+        Drag-and-drop or click to upload artwork directly onto the frame. Uploaded files are stored locally and shared across stories that use the same storage key, making it easy to reuse the same hero image in multiple placements.
+      </p>
+    </div>
+
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Fine-Tune the Composition</h4>
+      <p className="sb-section-item-paragraph">
+        Use the <strong>Image Adjustments</strong> controls to change how the photo fits within each layout. Tweak the object fit, horizontal focus, and vertical focus—or enter a custom <code>background-size</code> value—to keep the most important elements centered on every platform.
+      </p>
+    </div>
+  </div>
+
+  <div className="sb-section">
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Manage Brand Elements</h4>
+      <p className="sb-section-item-paragraph">
+        Need to refresh a logo or watermark? Upload new assets from the <strong>Brand Elements</strong> stories. They follow the same drag-and-drop workflow and persist your uploads, so the updated branding is available everywhere you work.
+      </p>
+    </div>
+  </div>
+
+  <div className="sb-section">
+    <div className="sb-section-item">
+      <h4 className="sb-section-item-heading">Share and Export</h4>
+      <p className="sb-section-item-paragraph">
+        Save a configuration by copying the Storybook URL—controls and uploaded imagery are encoded in the link so teammates can explore and iterate asynchronously. When you are ready to deliver, pick PNG, JPG, or WEBP from the <strong>Format</strong> toolbar control and use the download icon to export a high-resolution image.
+      </p>
+      <ImageWithPlaceholder
+        width={1280}
+        height={720}
+        text="Example Thumbnail"
+        alt="An example platform template generated with the Social Media Toolkit"
+      />
+    </div>
+  </div>
+</div>
+
+<style>
+  {`
+  .sb-container {
+    margin-bottom: 48px;
+  }
+
+  .sb-section {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .sb-section-title {
+    margin-bottom: 32px;
+  }
+
+  .sb-section-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sb-section-item-heading {
+    padding-top: 20px !important;
+    padding-bottom: 5px !important;
+    margin: 0 !important;
+  }
+
+  .sb-section-item-paragraph {
+    margin: 0;
+    padding-bottom: 10px;
+  }
+
+  .sb-section a:not(h1 a, h2 a, h3 a) {
+    font-size: 14px;
+    text-decoration: none;
+    color: #007bff;
+  }
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    border-radius: 4px;
+  }
+
+  @media screen and (max-width: 600px) {
+    .sb-section {
+      flex-direction: column;
+    }
+  }
+  `}
+</style>
