@@ -38,6 +38,14 @@ Create, preview, and export on-brand campaign assets for every social channel fr
    ```
    The static build outputs to `./docs`, which is ready to serve via GitHub Pages or any static host.
 
+### Build and deploy to GitHub Pages
+- Run the GitHub Pages build to generate relative asset paths and add a `.nojekyll` marker so GitHub does not strip Storybook assets:
+  ```bash
+  npm run build-storybook:gh
+  ```
+- Commit the generated `docs/` folder and push to your default branch.
+- In your repository settings, enable GitHub Pages to serve from the `docs/` folder on the default branch. The published site will live at `https://<username>.github.io/<repo>/`.
+
 ## Project structure
 ```
 ├── src
