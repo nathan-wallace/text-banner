@@ -5,15 +5,18 @@ const fontImport = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 `;
 
-const baseContainerStyle = {
+const baseContainerStyle = (backgroundTheme) => ({
   minHeight: "100vh",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   padding: "48px",
   boxSizing: "border-box",
-  background: "radial-gradient(circle at 15% 20%, rgba(46, 74, 117, 0.45), transparent 40%), radial-gradient(circle at 80% 80%, rgba(15, 39, 77, 0.45), transparent 36%), linear-gradient(135deg, #0b1d36, #142f57)",
-};
+  background:
+    backgroundTheme === "white"
+      ? "linear-gradient(180deg, #f5f7fb 0%, #ffffff 60%, #e8ecf3 100%)"
+      : "radial-gradient(circle at 15% 20%, rgba(46, 74, 117, 0.45), transparent 40%), radial-gradient(circle at 80% 80%, rgba(15, 39, 77, 0.45), transparent 36%), linear-gradient(135deg, #0b1d36, #142f57)",
+});
 
 const cardStyle = (maxWidth, padding, cornerRadius) => ({
   maxWidth: `${maxWidth}px`,
@@ -49,6 +52,8 @@ export default {
     lineHeight: 0.9,
     accentColor: "#8bd8ff",
     subheadingFitRatio: 7.5,
+    backgroundTheme: "blue",
+    logoUrl: "https://www.hhs.gov/sites/default/files/logo-blue-lg.png",
   },
   argTypes: {
     kicker: { control: "text" },
@@ -62,6 +67,11 @@ export default {
     maxSize: { control: { type: "range", min: 60, max: 200, step: 2 } },
     lineHeight: { control: { type: "range", min: 0.7, max: 1.3, step: 0.01 } },
     accentColor: { control: "color" },
+    backgroundTheme: {
+      control: { type: "inline-radio" },
+      options: ["blue", "white"],
+    },
+    logoUrl: { control: "text" },
   },
 };
 
@@ -78,10 +88,11 @@ export const FitTextBanner = (args) => {
     lineHeight,
     accentColor,
     subheadingFitRatio,
+    backgroundTheme,
   } = args;
 
   return (
-    <div style={baseContainerStyle}>
+    <div style={baseContainerStyle(backgroundTheme)}>
       <style>{fontImport}</style>
       <section style={cardStyle(maxWidth, padding, cornerRadius)}>
         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -110,6 +121,79 @@ export const FitTextBanner = (args) => {
           {headline}
         </FitText>
       </section>
+    </div>
+  );
+};
+
+export const FitTextBannerWithLogo = (args) => {
+  const {
+    kicker,
+    headline,
+    maxWidth,
+    padding,
+    cornerRadius,
+    fitRatio,
+    minSize,
+    maxSize,
+    lineHeight,
+    accentColor,
+    subheadingFitRatio,
+    backgroundTheme,
+    logoUrl,
+  } = args;
+
+  return (
+    <div style={baseContainerStyle(backgroundTheme)}>
+      <style>{fontImport}</style>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "24px",
+          width: "100%",
+          maxWidth: `${maxWidth + padding * 2}px`,
+          boxSizing: "border-box",
+        }}
+      >
+        <img
+          src={logoUrl}
+          alt="Banner logo"
+          style={{
+            width: "88px",
+            height: "88px",
+            objectFit: "contain",
+            filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.28))",
+            flexShrink: 0,
+          }}
+        />
+        <section style={cardStyle(maxWidth, padding, cornerRadius)}>
+          <FitText
+            as="h1"
+            minSize={minSize}
+            maxSize={maxSize}
+            fitRatio={fitRatio}
+            lineHeight={lineHeight}
+            align="left"
+            shadow="0 6px 25px rgba(0,0,0,0.25)"
+          >
+            {kicker}
+          </FitText>
+          <FitText
+            as="h2"
+            minSize={minSize - 6}
+            maxSize={maxSize - 8}
+            fitRatio={subheadingFitRatio}
+            lineHeight={lineHeight + 0.06}
+            color={accentColor}
+            letterSpacing="0.04em"
+            style={{ marginTop: "10px" }}
+            weight={600}
+          >
+            {headline}
+          </FitText>
+        </section>
+      </div>
     </div>
   );
 };
