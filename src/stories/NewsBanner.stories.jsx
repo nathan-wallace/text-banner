@@ -54,7 +54,7 @@ export default {
     accentColor: "#8bd8ff",
     subheadingFitRatio: 7.5,
     backgroundTheme: "blue",
-    logoUrl: brand.logoUrl,
+    logoUrl: "https://www.hhs.gov/sites/default/files/logo-blue-lg.png",
   },
   argTypes: {
     kicker: { control: "text" },
@@ -146,26 +146,30 @@ export const FitTextBannerWithLogo = (args) => {
   return (
     <div style={baseContainerStyle(backgroundTheme)}>
       <style>{fontImport}</style>
-      <section style={cardStyle(maxWidth, padding, cornerRadius)}>
-        <div
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "24px",
+          width: "100%",
+          maxWidth: `${maxWidth + padding * 2}px`,
+          boxSizing: "border-box",
+        }}
+      >
+        <img
+          src={logoUrl}
+          alt="Banner logo"
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "18px",
-            justifyContent: "center",
-            marginBottom: "12px",
+            width: "88px",
+            height: "88px",
+            objectFit: "contain",
+            filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.28))",
+            flexShrink: 0,
           }}
-        >
-          <img
-            src={logoUrl}
-            alt="Banner logo"
-            style={{
-              width: "68px",
-              height: "68px",
-              objectFit: "contain",
-              filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.25))",
-            }}
-          />
+        />
+        <section style={cardStyle(maxWidth, padding, cornerRadius)}>
+
           <FitText
             as="h1"
             minSize={minSize}
@@ -174,25 +178,25 @@ export const FitTextBannerWithLogo = (args) => {
             lineHeight={lineHeight}
             align="left"
             shadow="0 6px 25px rgba(0,0,0,0.25)"
-            style={{ flex: 1 }}
           >
             {kicker}
           </FitText>
-        </div>
-        <FitText
-          as="h2"
-          minSize={minSize - 6}
-          maxSize={maxSize - 8}
-          fitRatio={subheadingFitRatio}
-          lineHeight={lineHeight + 0.06}
-          color={accentColor}
-          letterSpacing="0.04em"
-          style={{ marginTop: "10px" }}
-          weight={600}
-        >
-          {headline}
-        </FitText>
-      </section>
+          <FitText
+            as="h2"
+            minSize={minSize - 6}
+            maxSize={maxSize - 8}
+            fitRatio={subheadingFitRatio}
+            lineHeight={lineHeight + 0.06}
+            color={accentColor}
+            letterSpacing="0.04em"
+            style={{ marginTop: "10px" }}
+            weight={600}
+          >
+            {headline}
+          </FitText>
+        </section>
+      </div>
+
     </div>
   );
 };
