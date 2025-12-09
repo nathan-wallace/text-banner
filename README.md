@@ -1,4 +1,4 @@
-# Social Media Toolkit Starter
+# Announcement Toolkit Starter
 
 Create, preview, and export on-brand campaign assets for every social channel from a single Storybook workspace. This template extends the default Storybook sample stories with reusable brand tokens, drag-and-drop asset helpers, and ready-to-customize platform canvases so your team can ship cohesive campaigns faster.
 
