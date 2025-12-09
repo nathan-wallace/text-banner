@@ -1,5 +1,6 @@
 import React from "react";
 import { FitText } from "../components/FitText";
+import { brand } from "../brand";
 
 const fontImport = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
@@ -168,6 +169,7 @@ export const FitTextBannerWithLogo = (args) => {
           }}
         />
         <section style={cardStyle(maxWidth, padding, cornerRadius)}>
+
           <FitText
             as="h1"
             minSize={minSize}
@@ -194,6 +196,7 @@ export const FitTextBannerWithLogo = (args) => {
           </FitText>
         </section>
       </div>
+
     </div>
   );
 };
