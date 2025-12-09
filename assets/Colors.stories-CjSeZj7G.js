@@ -1,0 +1,8 @@
+import{R as e}from"./index-CgfFrydU.js";import{c as l}from"./colors-DZBBGjh9.js";import"./_commonjsHelpers-CqkleIqs.js";const x={title:"Brand/Colors"},i=({name:a,value:t})=>e.createElement("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",margin:"0.5rem"}},e.createElement("div",{style:{width:"60px",height:"60px",backgroundColor:t,border:"1px solid #ccc",borderRadius:"4px"},title:t}),e.createElement("small",null,a),e.createElement("small",{style:{color:"#555"}},t)),s=({title:a,colors:t})=>e.createElement("div",{style:{marginBottom:"2rem"}},e.createElement("h3",null,a),e.createElement("div",{style:{display:"flex",flexWrap:"wrap"}},Object.entries(t).map(([o,n])=>typeof n=="string"?e.createElement(i,{key:o,name:o,value:n}):Object.entries(n).map(([c,u])=>e.createElement(i,{key:o+c,name:`${o}-${c}`,value:u}))))),r=()=>e.createElement("div",{style:{padding:"1rem"}},e.createElement(s,{title:"Brand",colors:l.brand}),e.createElement(s,{title:"Status",colors:l.status}),e.createElement(s,{title:"Neutral",colors:l.neutral}),e.createElement(s,{title:"Semantic",colors:l.semantic}));r.__docgenInfo={description:"",methods:[],displayName:"Colors"};var m,d,p;r.parameters={...r.parameters,docs:{...(m=r.parameters)==null?void 0:m.docs,source:{originalSource:`() => <div style={{
+  padding: "1rem"
+}}>
+    <ColorGroup title="Brand" colors={colorTokens.brand} />
+    <ColorGroup title="Status" colors={colorTokens.status} />
+    <ColorGroup title="Neutral" colors={colorTokens.neutral} />
+    <ColorGroup title="Semantic" colors={colorTokens.semantic} />
+  </div>`,...(p=(d=r.parameters)==null?void 0:d.docs)==null?void 0:p.source}}};const f=["Colors"];export{r as Colors,f as __namedExportsOrder,x as default};
