@@ -46,8 +46,8 @@ const resolveLogo = (backgroundTheme, logoUrl) => {
 };
 
 const responsiveLogoStyles = `
-  .logo-banner { display: flex; align-items: stretch; justify-content: center; gap: 24px; width: 100%; box-sizing: border-box; }
-  .logo-banner__logo { height: 100%; max-height: 360px; width: auto; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.28)); flex-shrink: 0; }
+  .logo-banner { display: flex; align-items: stretch; justify-content: center; gap: 24px; width: 100%; box-sizing: border-box; --logo-size-ratio: 0.32; }
+  .logo-banner__logo { height: auto; max-height: 360px; width: auto; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.28)); flex: 0 0 calc(var(--logo-size-ratio, 0.32) * 100%); max-width: calc(var(--logo-size-ratio, 0.32) * 100%); }
   .logo-banner__card { width: 100%; }
 
   @media (max-width: 900px) {
@@ -80,6 +80,7 @@ export default {
     subheadingFitRatio: 7.5,
     backgroundTheme: "blue",
     logoUrl: "",
+    logoSizeRatio: 0.32,
 
   },
   argTypes: {
@@ -99,6 +100,10 @@ export default {
       options: ["blue", "white"],
     },
     logoUrl: { control: "text" },
+    logoSizeRatio: {
+      control: { type: "range", min: 0.15, max: 0.5, step: 0.01 },
+      description: "Adjust the proportional width of the logo relative to the text card",
+    },
   },
 };
 
@@ -166,6 +171,7 @@ export const FitTextBannerWithLogo = (args) => {
     accentColor,
     subheadingFitRatio,
     backgroundTheme,
+    logoSizeRatio,
     logoUrl,
   } = args;
 
@@ -178,6 +184,7 @@ export const FitTextBannerWithLogo = (args) => {
         className="logo-banner"
         style={{
           maxWidth: `${maxWidth + padding * 2}px`,
+          "--logo-size-ratio": logoSizeRatio,
         }}
       >
         <img
