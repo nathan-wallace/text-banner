@@ -81,6 +81,7 @@ export default {
     backgroundTheme: "blue",
     logoUrl: "",
     logoSizeRatio: 0.32,
+    layoutStyle: "standard",
     kickerBackground: "#0b1d36",
     kickerTextColor: "#ffffff",
     subtextBackground: "#ffffff",
@@ -108,11 +109,121 @@ export default {
       control: { type: "range", min: 0.15, max: 0.5, step: 0.01 },
       description: "Adjust the proportional width of the logo relative to the text card",
     },
+    layoutStyle: {
+      control: { type: "inline-radio" },
+      options: ["standard", "splitSections"],
+      description:
+        "Choose splitSections to place the kicker on a blue bar and the subtext on a white bar inside a single card",
+    },
     kickerBackground: { control: "color" },
     kickerTextColor: { control: "color" },
     subtextBackground: { control: "color" },
     subtextTextColor: { control: "color" },
   },
+};
+
+const renderBannerContent = (args) => {
+  const {
+    kicker,
+    headline,
+    padding,
+    cornerRadius,
+    fitRatio,
+    minSize,
+    maxSize,
+    lineHeight,
+    accentColor,
+    subheadingFitRatio,
+    layoutStyle,
+    kickerBackground,
+    kickerTextColor,
+    subtextBackground,
+    subtextTextColor,
+  } = args;
+
+  if (layoutStyle === "splitSections") {
+    const innerRadius = Math.max(0, cornerRadius - 6);
+
+    return (
+      <div
+        style={{
+          borderRadius: `${innerRadius}px`,
+          overflow: "hidden",
+          boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: kickerBackground,
+            padding: `${padding}px`,
+          }}
+        >
+          <FitText
+            as="h1"
+            minSize={minSize}
+            maxSize={maxSize}
+            fitRatio={fitRatio}
+            lineHeight={lineHeight}
+            align="left"
+            color={kickerTextColor}
+            shadow="0 6px 25px rgba(0,0,0,0.2)"
+          >
+            {kicker}
+          </FitText>
+        </div>
+
+        <div
+          style={{
+            backgroundColor: subtextBackground,
+            padding: `${padding}px`,
+          }}
+        >
+          <FitText
+            as="h2"
+            minSize={minSize - 6}
+            maxSize={maxSize - 8}
+            fitRatio={subheadingFitRatio}
+            lineHeight={lineHeight + 0.06}
+            align="left"
+            color={subtextTextColor}
+            letterSpacing="0.04em"
+            weight={600}
+            style={{ textTransform: "none" }}
+          >
+            {headline}
+          </FitText>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <FitText
+        as="h1"
+        minSize={minSize}
+        maxSize={maxSize}
+        fitRatio={fitRatio}
+        lineHeight={lineHeight}
+        shadow="0 6px 25px rgba(0,0,0,0.25)"
+      >
+        {kicker}
+      </FitText>
+      <FitText
+        as="h2"
+        minSize={minSize - 6}
+        maxSize={maxSize - 8}
+        fitRatio={subheadingFitRatio}
+        lineHeight={lineHeight + 0.06}
+        color={accentColor}
+        letterSpacing="0.04em"
+        style={{ marginTop: "10px" }}
+        weight={600}
+      >
+        {headline}
+      </FitText>
+    </>
+  );
 };
 
 export const FitTextBanner = (args) => {
@@ -129,37 +240,36 @@ export const FitTextBanner = (args) => {
     accentColor,
     subheadingFitRatio,
     backgroundTheme,
+    layoutStyle,
+    kickerBackground,
+    kickerTextColor,
+    subtextBackground,
+    subtextTextColor,
   } = args;
+
+  const cardPadding = layoutStyle === "splitSections" ? Math.max(12, padding / 2) : padding;
 
   return (
     <div style={baseContainerStyle(backgroundTheme)}>
       <style>{fontImport}</style>
-      <section style={cardStyle(maxWidth, padding, cornerRadius)}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-        </div>
-        <FitText
-          as="h1"
-          minSize={minSize}
-          maxSize={maxSize}
-          fitRatio={fitRatio}
-          lineHeight={lineHeight}
-          shadow="0 6px 25px rgba(0,0,0,0.25)"
-        >
-          {kicker}
-        </FitText>
-        <FitText
-          as="h2"
-          minSize={minSize - 6}
-          maxSize={maxSize - 8}
-          fitRatio={subheadingFitRatio}
-          lineHeight={lineHeight + 0.06}
-          color={accentColor}
-          letterSpacing="0.04em"
-          style={{ marginTop: "10px" }}
-          weight={600}
-        >
-          {headline}
-        </FitText>
+      <section style={cardStyle(maxWidth, cardPadding, cornerRadius)}>
+        {renderBannerContent({
+          kicker,
+          headline,
+          padding,
+          cornerRadius,
+          fitRatio,
+          minSize,
+          maxSize,
+          lineHeight,
+          accentColor,
+          subheadingFitRatio,
+          layoutStyle,
+          kickerBackground,
+          kickerTextColor,
+          subtextBackground,
+          subtextTextColor,
+        })}
       </section>
     </div>
   );
@@ -260,9 +370,15 @@ export const FitTextBannerWithLogo = (args) => {
     backgroundTheme,
     logoSizeRatio,
     logoUrl,
+    layoutStyle,
+    kickerBackground,
+    kickerTextColor,
+    subtextBackground,
+    subtextTextColor,
   } = args;
 
   const computedLogoUrl = resolveLogo(backgroundTheme, logoUrl);
+  const cardPadding = layoutStyle === "splitSections" ? Math.max(12, padding / 2) : padding;
 
   return (
     <div style={baseContainerStyle(backgroundTheme)}>
@@ -273,37 +389,30 @@ export const FitTextBannerWithLogo = (args) => {
           maxWidth: `${maxWidth + padding * 2}px`,
           "--logo-size-ratio": logoSizeRatio,
         }}
-      >
-        <img
-          src={computedLogoUrl}
-          alt="Banner logo"
-          className="logo-banner__logo"
-        />
-        <section className="logo-banner__card" style={cardStyle(maxWidth, padding, cornerRadius)}>
-          <FitText
-            as="h1"
-            minSize={minSize}
-            maxSize={maxSize}
-            fitRatio={fitRatio}
-            lineHeight={lineHeight}
-            align="left"
-            shadow="0 6px 25px rgba(0,0,0,0.25)"
-          >
-            {kicker}
-          </FitText>
-          <FitText
-            as="h2"
-            minSize={minSize - 6}
-            maxSize={maxSize - 8}
-            fitRatio={subheadingFitRatio}
-            lineHeight={lineHeight + 0.06}
-            color={accentColor}
-            letterSpacing="0.04em"
-            style={{ marginTop: "10px" }}
-            weight={600}
-          >
-            {headline}
-          </FitText>
+        >
+          <img
+            src={computedLogoUrl}
+            alt="Banner logo"
+            className="logo-banner__logo"
+          />
+        <section className="logo-banner__card" style={cardStyle(maxWidth, cardPadding, cornerRadius)}>
+          {renderBannerContent({
+            kicker,
+            headline,
+            padding,
+            cornerRadius,
+            fitRatio,
+            minSize,
+            maxSize,
+            lineHeight,
+            accentColor,
+            subheadingFitRatio,
+            layoutStyle,
+            kickerBackground,
+            kickerTextColor,
+            subtextBackground,
+            subtextTextColor,
+          })}
         </section>
       </div>
     </div>
