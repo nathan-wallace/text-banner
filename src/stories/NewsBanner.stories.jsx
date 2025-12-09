@@ -6,6 +6,11 @@ const fontImport = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 `;
 
+const THEME_LOGOS = {
+  blue: "https://www.hhs.gov/sites/default/files/logo-white-lg.png",
+  white: "https://www.hhs.gov/sites/default/files/logo-blue-lg.png",
+};
+
 const baseContainerStyle = (backgroundTheme) => ({
   minHeight: "100vh",
   display: "flex",
@@ -35,6 +40,26 @@ const cardStyle = (maxWidth, padding, cornerRadius) => ({
   boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
 });
 
+const resolveLogo = (backgroundTheme, logoUrl) => {
+  if (logoUrl?.trim()) return logoUrl;
+  return THEME_LOGOS[backgroundTheme] || THEME_LOGOS.blue;
+};
+
+const responsiveLogoStyles = `
+  .logo-banner { display: flex; align-items: stretch; justify-content: center; gap: 24px; width: 100%; box-sizing: border-box; }
+  .logo-banner__logo { height: 100%; max-height: 360px; width: auto; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.28)); flex-shrink: 0; }
+  .logo-banner__card { width: 100%; }
+
+  @media (max-width: 900px) {
+    .logo-banner { gap: 18px; }
+  }
+
+  @media (max-width: 768px) {
+    .logo-banner { flex-direction: column; align-items: center; max-width: 100% !important; }
+    .logo-banner__logo { width: 140px; height: auto; }
+  }
+`;
+
 export default {
   title: "News Banner",
   parameters: {
@@ -54,7 +79,8 @@ export default {
     accentColor: "#8bd8ff",
     subheadingFitRatio: 7.5,
     backgroundTheme: "blue",
-    logoUrl: "https://www.hhs.gov/sites/default/files/logo-blue-lg.png",
+    logoUrl: "",
+
   },
   argTypes: {
     kicker: { control: "text" },
@@ -143,33 +169,23 @@ export const FitTextBannerWithLogo = (args) => {
     logoUrl,
   } = args;
 
+  const computedLogoUrl = resolveLogo(backgroundTheme, logoUrl);
+
   return (
     <div style={baseContainerStyle(backgroundTheme)}>
-      <style>{fontImport}</style>
+      <style>{fontImport + responsiveLogoStyles}</style>
       <div
+        className="logo-banner"
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "24px",
-          width: "100%",
           maxWidth: `${maxWidth + padding * 2}px`,
-          boxSizing: "border-box",
         }}
       >
         <img
-          src={logoUrl}
+          src={computedLogoUrl}
           alt="Banner logo"
-          style={{
-            width: "88px",
-            height: "88px",
-            objectFit: "contain",
-            filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.28))",
-            flexShrink: 0,
-          }}
+          className="logo-banner__logo"
         />
-        <section style={cardStyle(maxWidth, padding, cornerRadius)}>
-
+        <section className="logo-banner__card" style={cardStyle(maxWidth, padding, cornerRadius)}>
           <FitText
             as="h1"
             minSize={minSize}
@@ -196,7 +212,6 @@ export const FitTextBannerWithLogo = (args) => {
           </FitText>
         </section>
       </div>
-
     </div>
   );
 };
