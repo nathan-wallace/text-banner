@@ -375,7 +375,7 @@ export const FitTextBannerWithLogo = (args) => {
             alt="Banner logo"
             className="logo-banner__logo"
           />
-        <section className="logo-banner__card" style={cardStyle(maxWidth, padding, cornerRadius)}>
+        <section className="logo-banner__card" style={cardStyle(maxWidth, cardPadding, cornerRadius)}>
           {renderBannerContent({
             kicker,
             headline,
