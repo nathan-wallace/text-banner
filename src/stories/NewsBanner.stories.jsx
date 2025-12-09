@@ -30,8 +30,6 @@ const cardStyle = (maxWidth, padding, cornerRadius, layoutStyle, backgroundTheme
       if (backgroundTheme === "blue") return "linear-gradient(#ffffff, #ffffff)";
       return "linear-gradient(#0b1d36, #0b1d36)";
     }
-
-    if (backgroundTheme === "blue") return "linear-gradient(#ffffff, #ffffff)";
     return "linear-gradient(135deg, #8bd8ff, #1f4f82)";
   })();
 
