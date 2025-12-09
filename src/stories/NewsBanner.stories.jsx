@@ -12,7 +12,6 @@ const containerStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "linear-gradient(135deg, #0b1d36, #142f57)",
   padding: "48px",
   boxSizing: "border-box",
 };
@@ -20,11 +19,9 @@ const containerStyle = {
 const cardStyle = {
   maxWidth: "960px",
   width: "100%",
-  border: "1px solid rgba(255, 255, 255, 0.15)",
-  borderRadius: "12px",
-  padding: "64px",
-  background: "rgba(0, 0, 0, 0.2)",
-  backdropFilter: "blur(4px)",
+  border: "15px solid linear-gradient(135deg, #0b1d36, #142f57)",
+  borderRadius: "0px",
+  padding: "28px",
   textAlign: "center",
 };
 
@@ -35,24 +32,25 @@ const headingStyle = {
   display: "block",
   fontFamily: '"Bebas Neue", sans-serif',
   fontFeatureSettings: '"kern"',
-  fontKerning: "normal",
-  fontSize: "51.04px",
-  fontWeight: 400,
+
   hyphens: "none",
-  letterSpacing: "2.552px",
-  lineHeight: "56.144px",
+
   margin: 0,
+  padding: "0.5rem 2rem",
   textTransform: "uppercase",
+  background: "rgba(0, 0, 0, 0.2)",
+  background: "linear-gradient(135deg, #0b1d36, #142f57)",
+  backdropFilter: "blur(4px)",
+  textGrow: "per-line scale",
 };
 
 const subheadingStyle = {
   marginTop: "16px",
-  color: "rgba(255, 255, 255, 0.88)",
+  color: "#0b1d36",
   fontFamily: '"Bebas Neue", sans-serif',
-  letterSpacing: "1.6px",
-  fontSize: "32px",
-  lineHeight: "38px",
   textTransform: "uppercase",
+  textGrow: "per-line scale",
+  padding: "0.5rem 2.5rem",
 };
 
 export const Default = () => (
@@ -63,7 +61,7 @@ export const Default = () => (
     <section style={cardStyle}>
       <h1 style={headingStyle}>WHAT THEY ARE SAYING...</h1>
       <h2 style={subheadingStyle}>
-        ABOUT HHS'S ACTIONS TO PROTECT PARENTS' RIGHTS IN CHILDREN'S HEALTH DECISIONS
+        ABOUT HHS'S ACTIONS TO<br/> PROTECT PARENTS' RIGHTS <br/>IN CHILDREN'S HEALTH DECISIONS
       </h2>
     </section>
   </div>
