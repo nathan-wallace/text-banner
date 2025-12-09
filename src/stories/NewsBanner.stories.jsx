@@ -64,6 +64,10 @@ export default {
   title: "News Banner",
   parameters: {
     layout: "fullscreen",
+    controls: {
+      expanded: true,
+      sort: "requiredFirst",
+    },
   },
   args: {
     kicker: "What they are saying...",
@@ -82,6 +86,8 @@ export default {
     logoUrl: "",
     logoSizeRatio: 0.32,
     layoutStyle: "standard",
+    textAlign: "center",
+    contentSpacing: 12,
     kickerBackground: "#0b1d36",
     kickerTextColor: "#ffffff",
     subtextBackground: "#ffffff",
@@ -89,36 +95,74 @@ export default {
 
   },
   argTypes: {
-    kicker: { control: "text" },
-    headline: { control: "text" },
-    maxWidth: { control: { type: "range", min: 320, max: 1280, step: 10 } },
-    padding: { control: { type: "range", min: 12, max: 72, step: 2 } },
-    cornerRadius: { control: { type: "range", min: 0, max: 60, step: 2 } },
-    fitRatio: { control: { type: "range", min: 4, max: 16, step: 0.1 } },
-    subheadingFitRatio: { control: { type: "range", min: 3, max: 14, step: 0.1 } },
-    minSize: { control: { type: "range", min: 12, max: 80, step: 1 } },
-    maxSize: { control: { type: "range", min: 60, max: 200, step: 2 } },
-    lineHeight: { control: { type: "range", min: 0.7, max: 1.3, step: 0.01 } },
-    accentColor: { control: "color" },
-    backgroundTheme: {
-      control: { type: "inline-radio" },
-      options: ["blue", "white"],
-    },
-    logoUrl: { control: "text" },
-    logoSizeRatio: {
-      control: { type: "range", min: 0.15, max: 0.5, step: 0.01 },
-      description: "Adjust the proportional width of the logo relative to the text card",
-    },
+    kicker: { control: "text", table: { category: "Content" } },
+    headline: { control: "text", table: { category: "Content" } },
+    logoUrl: { control: "text", table: { category: "Content" } },
     layoutStyle: {
       control: { type: "inline-radio" },
       options: ["standard", "splitSections"],
       description:
         "Choose splitSections to place the kicker on a blue bar and the subtext on a white bar inside a single card",
+      table: { category: "Layout" },
     },
-    kickerBackground: { control: "color" },
-    kickerTextColor: { control: "color" },
-    subtextBackground: { control: "color" },
-    subtextTextColor: { control: "color" },
+    maxWidth: {
+      control: { type: "range", min: 320, max: 1280, step: 10 },
+      table: { category: "Layout" },
+    },
+    padding: {
+      control: { type: "range", min: 12, max: 72, step: 2 },
+      table: { category: "Layout" },
+    },
+    cornerRadius: {
+      control: { type: "range", min: 0, max: 60, step: 2 },
+      table: { category: "Layout" },
+    },
+    logoSizeRatio: {
+      control: { type: "range", min: 0.15, max: 0.5, step: 0.01 },
+      description: "Adjust the proportional width of the logo relative to the text card",
+      table: { category: "Layout" },
+    },
+    fitRatio: {
+      control: { type: "range", min: 4, max: 16, step: 0.1 },
+      table: { category: "Typography" },
+    },
+    subheadingFitRatio: {
+      control: { type: "range", min: 3, max: 14, step: 0.1 },
+      table: { category: "Typography" },
+    },
+    minSize: {
+      control: { type: "range", min: 12, max: 80, step: 1 },
+      table: { category: "Typography" },
+    },
+    maxSize: {
+      control: { type: "range", min: 60, max: 200, step: 2 },
+      table: { category: "Typography" },
+    },
+    lineHeight: {
+      control: { type: "range", min: 0.7, max: 1.3, step: 0.01 },
+      table: { category: "Typography" },
+    },
+    textAlign: {
+      control: { type: "inline-radio" },
+      options: ["left", "center", "right"],
+      table: { category: "Typography" },
+      description: "Align the kicker and headline consistently across layouts",
+    },
+    contentSpacing: {
+      control: { type: "range", min: 4, max: 36, step: 1 },
+      table: { category: "Typography" },
+      description: "Adjust the spacing between the kicker and headline",
+    },
+    accentColor: { control: "color", table: { category: "Colors" } },
+    backgroundTheme: {
+      control: { type: "inline-radio" },
+      options: ["blue", "white"],
+      table: { category: "Colors" },
+    },
+    kickerBackground: { control: "color", table: { category: "Colors" } },
+    kickerTextColor: { control: "color", table: { category: "Colors" } },
+    subtextBackground: { control: "color", table: { category: "Colors" } },
+    subtextTextColor: { control: "color", table: { category: "Colors" } },
   },
 };
 
@@ -135,11 +179,18 @@ const renderBannerContent = (args) => {
     accentColor,
     subheadingFitRatio,
     layoutStyle,
+    textAlign,
+    contentSpacing,
     kickerBackground,
     kickerTextColor,
     subtextBackground,
     subtextTextColor,
   } = args;
+
+  const resolvedAlign =
+    layoutStyle === "splitSections" && textAlign === "center"
+      ? "left"
+      : textAlign;
 
   if (layoutStyle === "splitSections") {
     const innerRadius = Math.max(0, cornerRadius - 6);
@@ -164,7 +215,7 @@ const renderBannerContent = (args) => {
             maxSize={maxSize}
             fitRatio={fitRatio}
             lineHeight={lineHeight}
-            align="left"
+            align={resolvedAlign}
             color={kickerTextColor}
             shadow="0 6px 25px rgba(0,0,0,0.2)"
           >
@@ -184,7 +235,7 @@ const renderBannerContent = (args) => {
             maxSize={maxSize - 8}
             fitRatio={subheadingFitRatio}
             lineHeight={lineHeight + 0.06}
-            align="left"
+            align={resolvedAlign}
             color={subtextTextColor}
             letterSpacing="0.04em"
             weight={600}
@@ -198,13 +249,14 @@ const renderBannerContent = (args) => {
   }
 
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", gap: `${contentSpacing}px` }}>
       <FitText
         as="h1"
         minSize={minSize}
         maxSize={maxSize}
         fitRatio={fitRatio}
         lineHeight={lineHeight}
+        align={textAlign}
         shadow="0 6px 25px rgba(0,0,0,0.25)"
       >
         {kicker}
@@ -217,12 +269,13 @@ const renderBannerContent = (args) => {
         lineHeight={lineHeight + 0.06}
         color={accentColor}
         letterSpacing="0.04em"
-        style={{ marginTop: "10px" }}
+        style={{ marginTop: 0 }}
         weight={600}
+        align={textAlign}
       >
         {headline}
       </FitText>
-    </>
+    </div>
   );
 };
 
@@ -241,6 +294,8 @@ export const FitTextBanner = (args) => {
     subheadingFitRatio,
     backgroundTheme,
     layoutStyle,
+    textAlign,
+    contentSpacing,
     kickerBackground,
     kickerTextColor,
     subtextBackground,
@@ -265,6 +320,8 @@ export const FitTextBanner = (args) => {
           accentColor,
           subheadingFitRatio,
           layoutStyle,
+          textAlign,
+          contentSpacing,
           kickerBackground,
           kickerTextColor,
           subtextBackground,
@@ -292,6 +349,8 @@ export const FitTextBannerWithLogo = (args) => {
     logoSizeRatio,
     logoUrl,
     layoutStyle,
+    textAlign,
+    contentSpacing,
     kickerBackground,
     kickerTextColor,
     subtextBackground,
@@ -329,6 +388,8 @@ export const FitTextBannerWithLogo = (args) => {
             accentColor,
             subheadingFitRatio,
             layoutStyle,
+            textAlign,
+            contentSpacing,
             kickerBackground,
             kickerTextColor,
             subtextBackground,
