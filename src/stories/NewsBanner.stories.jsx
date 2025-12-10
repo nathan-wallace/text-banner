@@ -27,7 +27,7 @@ const baseContainerStyle = (backgroundTheme) => ({
 const cardStyle = (maxWidth, padding, cornerRadius, layoutStyle, backgroundTheme) => {
   const borderGradient = (() => {
     if (layoutStyle === "splitSections") {
-      if (backgroundTheme === "blue") return "linear-gradient(#ffffff, #ffffff)";
+      if (backgroundTheme === "blue") return "linear-gradient(#1f4f82, #005ea2)";
       return "linear-gradient(#0b1d36, #0b1d36)";
     }
     return "linear-gradient(135deg, #8bd8ff, #1f4f82)";
@@ -81,7 +81,7 @@ export default {
   args: {
     kicker: "What they are saying...",
     headline:
-      "About HHS's actions to protect parents' rights in children's health decisions",
+      "About HHS's latest initiatives to improve public health outcomes nationwide",
     maxWidth: 960,
     padding: 32,
     cornerRadius: 18,
@@ -97,7 +97,7 @@ export default {
     layoutStyle: "standard",
     textAlign: "center",
     contentSpacing: 12,
-    kickerBackground: "#0b1d36",
+    kickerBackground: "#005ea2",
     kickerTextColor: "#ffffff",
     subtextBackground: "#ffffff",
     subtextTextColor: "#0b1d36",
