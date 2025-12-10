@@ -24,14 +24,58 @@ const baseContainerStyle = (backgroundTheme) => ({
       : "radial-gradient(circle at 15% 20%, rgba(46, 74, 117, 0.45), transparent 40%), radial-gradient(circle at 80% 80%, rgba(15, 39, 77, 0.45), transparent 36%), linear-gradient(135deg, #0b1d36, #142f57)",
 });
 
-const cardStyle = (maxWidth, padding, cornerRadius, layoutStyle, backgroundTheme) => {
-  const borderGradient = (() => {
-    if (layoutStyle === "splitSections") {
-      if (backgroundTheme === "blue") return "linear-gradient(#1f4f82, #005ea2)";
-      return "linear-gradient(#0b1d36, #0b1d36)";
-    }
-    return "linear-gradient(135deg, #8bd8ff, #1f4f82)";
-  })();
+const toRgb = (hex) => {
+  const normalizedHex = hex.replace("#", "");
+  const expandedHex =
+    normalizedHex.length === 3
+      ? normalizedHex
+          .split("")
+          .map((char) => char + char)
+          .join("")
+      : normalizedHex;
+
+  const int = Number.parseInt(expandedHex, 16);
+  if (Number.isNaN(int)) return null;
+
+  return {
+    r: (int >> 16) & 255,
+    g: (int >> 8) & 255,
+    b: int & 255,
+  };
+};
+
+const darkenColor = (hex, amount = 0.18) => {
+  const rgb = toRgb(hex);
+  if (!rgb) return hex;
+
+  const darkenChannel = (value) => Math.max(0, Math.min(255, Math.round(value * (1 - amount))));
+  const r = darkenChannel(rgb.r);
+  const g = darkenChannel(rgb.g);
+  const b = darkenChannel(rgb.b);
+
+  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b
+    .toString(16)
+    .padStart(2, "0")}`;
+};
+
+const createBorderGradient = (layoutStyle, accentColor, kickerBackground) => {
+  if (layoutStyle === "splitSections") {
+    return `linear-gradient(to bottom right, ${kickerBackground}, ${kickerBackground})`;
+  }
+
+  const darkerAccent = darkenColor(accentColor);
+  return `linear-gradient(to bottom right, ${accentColor}, ${darkerAccent})`;
+};
+
+const cardStyle = (
+  maxWidth,
+  padding,
+  cornerRadius,
+  layoutStyle,
+  accentColor,
+  kickerBackground
+) => {
+  const borderGradient = createBorderGradient(layoutStyle, accentColor, kickerBackground);
 
   return {
     maxWidth: `${maxWidth}px`,
@@ -322,7 +366,8 @@ export const FitTextBanner = (args) => {
           cardPadding,
           cornerRadius,
           layoutStyle,
-          backgroundTheme
+          accentColor,
+          kickerBackground
         )}
       >
         {renderBannerContent({
@@ -399,7 +444,8 @@ export const FitTextBannerWithLogo = (args) => {
             cardPadding,
             cornerRadius,
             layoutStyle,
-            backgroundTheme
+            accentColor,
+            kickerBackground
           )}
         >
           {renderBannerContent({
