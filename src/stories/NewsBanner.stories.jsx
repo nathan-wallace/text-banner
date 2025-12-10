@@ -44,18 +44,74 @@ const toRgb = (hex) => {
   };
 };
 
+const rgbToHsl = ({ r, g, b }) => {
+  const rNorm = r / 255;
+  const gNorm = g / 255;
+  const bNorm = b / 255;
+
+  const max = Math.max(rNorm, gNorm, bNorm);
+  const min = Math.min(rNorm, gNorm, bNorm);
+  const delta = max - min;
+
+  let h = 0;
+  if (delta !== 0) {
+    if (max === rNorm) h = ((gNorm - bNorm) / delta) % 6;
+    else if (max === gNorm) h = (bNorm - rNorm) / delta + 2;
+    else h = (rNorm - gNorm) / delta + 4;
+    h *= 60;
+  }
+
+  const l = (max + min) / 2;
+  const s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+  return { h: (h + 360) % 360, s, l };
+};
+
+const hslToHex = (h, s, l) => {
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+
+  let rPrime = 0;
+  let gPrime = 0;
+  let bPrime = 0;
+
+  if (h < 60) {
+    rPrime = c;
+    gPrime = x;
+  } else if (h < 120) {
+    rPrime = x;
+    gPrime = c;
+  } else if (h < 180) {
+    gPrime = c;
+    bPrime = x;
+  } else if (h < 240) {
+    gPrime = x;
+    bPrime = c;
+  } else if (h < 300) {
+    rPrime = x;
+    bPrime = c;
+  } else {
+    rPrime = c;
+    bPrime = x;
+  }
+
+  const toHex = (value) => {
+    const channel = Math.max(0, Math.min(255, Math.round((value + m) * 255)));
+    return channel.toString(16).padStart(2, "0");
+  };
+
+  return `#${toHex(rPrime)}${toHex(gPrime)}${toHex(bPrime)}`;
+};
+
 const darkenColor = (hex, amount = 0.18) => {
   const rgb = toRgb(hex);
   if (!rgb) return hex;
 
-  const darkenChannel = (value) => Math.max(0, Math.min(255, Math.round(value * (1 - amount))));
-  const r = darkenChannel(rgb.r);
-  const g = darkenChannel(rgb.g);
-  const b = darkenChannel(rgb.b);
+  const { h, s, l } = rgbToHsl(rgb);
+  const darkenedLightness = Math.max(0, Math.min(1, l * (1 - amount)));
 
-  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b
-    .toString(16)
-    .padStart(2, "0")}`;
+  return hslToHex(h, s, darkenedLightness);
 };
 
 const createBorderGradient = (layoutStyle, accentColor, kickerBackground) => {
